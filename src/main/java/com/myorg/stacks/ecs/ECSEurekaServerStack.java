@@ -18,7 +18,7 @@ public class ECSEurekaServerStack extends Stack {
     public ECSEurekaServerStack(final Construct scope, final String id, final StackProps props, Cluster cluster) {
         super(scope, id, props);
 
-        CfnParameter eurekaServerUser = CfnParameter.Builder.create(this, "eurekaServerUser")
+        CfnParameter eurekaServerUser = CfnParameter.Builder.create(this, "victorhfsilva/gerenciamento-cursos-eureka-server")
                 .type("String")
                 .description("Usuário do Eureka Server.")
                 .build();

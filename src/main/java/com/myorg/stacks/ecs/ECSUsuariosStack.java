@@ -27,7 +27,7 @@ public class ECSUsuariosStack extends Stack {
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
-                                .image(ContainerImage.fromRegistry("amazon/amazon-ecs-sample"))
+                                .image(ContainerImage.fromRegistry("victorhfsilva/gerenciamento-cursos-usuarios-ms"))
                                 .environment(Map.of(
                                         "POSTGRES_USER", Fn.importValue("db-usuarios-user"),
                                         "POSTGRES_PWD", Fn.importValue("db-usuarios-password"),

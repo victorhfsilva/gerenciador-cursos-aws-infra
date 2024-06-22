@@ -27,7 +27,7 @@ public class ECSApiGatewayStack extends Stack {
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
-                                .image(ContainerImage.fromRegistry("amazon/amazon-ecs-sample"))
+                                .image(ContainerImage.fromRegistry("victorhfsilva/gerenciamento-cursos-api-gateway"))
                                 .environment(Map.of(
                                         "EUREKA_SERVER_USER", Fn.importValue("eureka-server-user"),
                                         "EUREKA_SERVER_PASSWORD", Fn.importValue("eureka-server-password"),
