@@ -1,40 +1,29 @@
 package com.myorg;
 
+import com.myorg.stacks.rds.RdsCursosStack;
+import com.myorg.stacks.rds.RdsUsuariosStack;
+import com.myorg.stacks.ClusterStack;
+import com.myorg.stacks.VpcStack;
 import software.amazon.awscdk.App;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.StackProps;
-
-import java.util.Arrays;
+import software.amazon.awscdk.services.ec2.Vpc;
+import software.amazon.awscdk.services.ecs.Cluster;
 
 public class AwsInfraApp {
     public static void main(final String[] args) {
         App app = new App();
 
-        new AwsInfraStack(app, "AwsInfraStack", StackProps.builder()
-                // If you don't specify 'env', this stack will be environment-agnostic.
-                // Account/Region-dependent features and context lookups will not work,
-                // but a single synthesized template can be deployed anywhere.
+        VpcStack vpcStack = new VpcStack(app, "GerenciadorDeCursosVpc");
+        Vpc vpc = vpcStack.getVpc();
 
-                // Uncomment the next block to specialize this stack for the AWS Account
-                // and Region that are implied by the current CLI configuration.
-                /*
-                .env(Environment.builder()
-                        .account(System.getenv("CDK_DEFAULT_ACCOUNT"))
-                        .region(System.getenv("CDK_DEFAULT_REGION"))
-                        .build())
-                */
+        ClusterStack clusterStack = new ClusterStack(app, "GerenciadorDeCursosCluster", vpc);
+        Cluster cluster = clusterStack.getCluster();
+        clusterStack.addDependency(vpcStack);
 
-                // Uncomment the next block if you know exactly what Account and Region you
-                // want to deploy the stack to.
-                /*
-                .env(Environment.builder()
-                        .account("123456789012")
-                        .region("us-east-1")
-                        .build())
-                */
+        RdsCursosStack rdsCursosStack = new RdsCursosStack(app, "GerenciadorDeCursosRdsCursos", vpc);
+        rdsCursosStack.addDependency(vpcStack);
 
-                // For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-                .build());
+        RdsUsuariosStack rdsUsuariosStack = new RdsUsuariosStack(app, "GerenciadorDeCursosRdsUsuarios", vpc);
+        rdsUsuariosStack.addDependency(vpcStack);
 
         app.synth();
     }
